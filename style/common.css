@@ -1,0 +1,159 @@
+body{
+	font-size: 14px;
+	font-family: "Microsoft Yahei",Arial,Helvetica;
+}
+a{
+	text-decoration:none;
+	color:#333;
+}
+a:hover{
+	text-decoration:underline;
+}
+a:visited{
+	color:#999;
+}
+input[type='button']{
+	-webkit-padding-end: 10px;
+	-webkit-padding-start: 10px;
+}
+input[type='search'] {
+	-webkit-appearance: textfield;
+	min-width: 160px;
+	border: 1px solid #bfbfbf;
+	border-radius: 2px;
+	box-sizing: border-box;
+	color: #444;
+	font: inherit;
+	margin: 0;
+	min-height: 2em;
+	padding: 3px;
+	padding-bottom: 4px;
+}
+
+.wraper{
+	padding-top:24px;
+}
+.nav-box{
+	float:left;
+	width:155px;
+}
+.nav-box li{
+	height:28px;
+	padding-left:18px;
+	border-left:6px solid #fff;
+	line-height:28px;
+	color:#999;
+	cursor:pointer;
+}
+.nav-box li.active{
+	border-color:rgb(78, 87, 100);
+	color: rgb(70, 78, 90);
+}
+.nav-box li.all{
+	margin-bottom:20px;
+}
+.nav-box li.setting{
+	margin-top:20px;
+}
+.panels{
+	padding:0 20px 0 160px;
+}
+.panels .hd{
+	width:80%;
+	max-width:1320px;
+	padding-right: 24px;
+	border-bottom:1px solid #eee;
+}
+.panels .hd h2{
+	font-size:18px;
+	padding-bottom:13px;
+	line-height:24px;
+}
+.panels .loader{
+	float:right;
+	width:128px;
+	margin-right:-24px;
+	padding-top:6px;
+	text-align:center;
+}
+.panels .loader img{
+	display:none;
+	margin-top:8px;
+}
+.panels .search{
+	float:right;
+	width:320px;
+	margin-right:120px;
+	padding-top:4px;
+}
+.panels .bd{
+	width:80%;
+	max-width:1320px;
+	padding-top:18px;
+}
+.panels .bd p{
+	margin-bottom:20px;
+	font-size:16px;
+}
+.c-nav{
+	height:22px;
+}
+.c-nav li{
+	float:left;
+	padding:0 8px;
+	line-height:22px;
+	font-size:16px;
+	cursor:pointer;
+}
+.c-nav li.active{
+	border-bottom:1px solid #333;
+}
+
+.link-list a{
+	padding:0 6px 4px;
+	border-bottom:1px dotted #d4d4d4;
+	line-height:24px;
+}
+
+.c-tabs .time{
+	float:right;
+	font-size:14px;
+	color:#999;
+}
+
+.panels .sug{
+	margin-bottom:20px;
+}
+.panels .sug p{
+	margin-bottom:10px;
+}
+.panels .sug .title{
+	font-size:16px;
+}
+
+.panels .more{
+	margin-bottom:20px;
+	background:#eee;
+	text-align:center;
+	font-size:16px;
+}
+.panels .more a,.panels .more span{
+	display:block;
+	line-height:30px;
+}
+
+.panels label{
+	display:inline-block;
+	width:80px;
+	text-align:right;
+	margin-right:12px;
+	vertical-align:top;
+	font-size:16px;
+}
+.panels textarea{
+	border:1px solid #ebebeb;
+	padding:5px 10px;
+	width:400px;
+	height:200px;
+	resize: none;
+}

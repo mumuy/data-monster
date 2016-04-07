@@ -1,0 +1,86 @@
+//配置文件
+_data = [
+	{
+		'url':'',
+		'item':'',
+		'title':'',
+		'url':'',
+		'time':'',
+		'description':''
+	},
+];
+
+var _config = {
+	'www.chuapp.com':[{
+		'p':1,
+		'c':0,
+		'port':'getChuappNews'
+	},{
+		'p':1,
+		'c':1,
+		'port':'getChuappSd'
+	}],
+	'news.shouyou.com':[{
+		'p':2,
+		'c':0,
+		'port':'getShouyouNews'
+	}],
+	'www.laohu.com':[{
+		'p':3,
+		'c':0,
+		'port':'getLaohuNews'
+	}],
+	'www.appgame.com':[{
+		'p':4,
+		'c':0,
+		'port':'getAppgameNews'
+	},{
+		'p':4,
+		'c':1,
+		'port':'getAppgameWeb'
+	}],
+	'news.d.cn':[{
+		'p':5,
+		'c':0,
+		'port':'getDNews'
+	}],
+	'www.iapps.im':[{
+		'p':6,
+		'c':0,
+		'port':'getIappsNews'
+	}],
+	'youxiputao.com':[{
+		'p':7,
+		'c':0,
+		'port':'getYouxiputaoNews'
+	}]
+}
+var _global = {
+	'port_num' : 9,
+	'page': {
+		'all':0,
+		'getChuappNews':0,
+		'getChuappSd':0,
+		'getShouyouNews':0,
+		'getLaohuNews':0,
+		'getAppgameNews':0,
+		'getAppgameWeb':0,
+		'getDNews':0,
+		'getIappsNews':0,
+		'getYouxiputaoNews':0
+	},
+	'num': {
+		'all':0,
+		'getChuappNews':10,
+		'getChuappSd':10,
+		'getShouyouNews':15,
+		'getLaohuNews':12,
+		'getAppgameNews':18,
+		'getAppgameWeb':18,
+		'getDNews':12,
+		'getIappsNews':10,
+		'getYouxiputaoNews':10
+	},
+	'page_num':20,
+	'expires':2
+}
