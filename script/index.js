@@ -1,3 +1,60 @@
+//页面加载
+(function(){
+	var $nav = $('.container .nav');
+	var $panels =  $('.container .panels');
+	$nav.append('<li class="all">全部</li>');
+	$panels.append('<li>\
+		<div class="box c-tabs" data-id="">\
+			<div class="hd">\
+				<div class="loader">\
+					<input data-id="" type="button" value="重新获取"/>\
+					<img src="../image/loader.gif"/>\
+				</div>\
+				<h2>全部</h2>\
+				<ul class="c-nav"><li>最新</li></ul>\
+			</div>\
+			<div class="bd">\
+				<ul class="c-panels"><li></li></ul>\
+			</div>\
+		</div>\
+	</li>');
+	for(var i=0;i<_data.length;i++){
+		$nav.append('<li>'+_data[i]['name']+'</li>');
+		var names = '';
+		for(var j=0;j<_data[i]['items'].length;j++){
+			names += '<li>'+_data[i]['items'][j]['name']+'</li>';
+		}
+		$panels.append('<li>\
+			<div class="box c-tabs" data-id="">\
+				<div class="hd">\
+					<div class="loader">\
+						<input data-id="" type="button" value="重新获取"/>\
+						<img src="../image/loader.gif"/>\
+					</div>\
+					<h2>全部</h2>\
+					<ul class="c-nav">'+names+'</ul>\
+				</div>\
+				<div class="bd">\
+					<ul class="c-panels">'+names+'</ul>\
+				</div>\
+			</div>\
+		</li>');
+	}
+	$nav.append('<li class="setting">设置</li>');
+	$panels.append('<li>\
+		<div class="box c-tabs">\
+			<div class="hd">\
+				<h2>设置</h2>\
+			</div>\
+			<div class="bd">\
+				<p></p>\
+				<p><label>黑名单:</label><textarea id="blacklist" placeholder="关键词之间使用英文\',\'分割"></textarea></p>\
+				<p><label>白名单:</label><textarea id="whitelist" placeholder="关键词之间使用英文\',\'分割"></textarea></p>\
+			</div>\
+		</div>\
+	</li>');
+})();
+
 //页面tabs效果
 var $tabs = $(".tabs");
 var $panels = $tabs.find(".panels>li");
