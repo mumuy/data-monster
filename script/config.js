@@ -60,51 +60,6 @@ _data = [
 	}
 ];
 
-var _config = {
-	'www.chuapp.com':[{
-		'p':1,
-		'c':0,
-		'port':'getChuappNews'
-	},{
-		'p':1,
-		'c':1,
-		'port':'getChuappSd'
-	}],
-	'news.shouyou.com':[{
-		'p':2,
-		'c':0,
-		'port':'getShouyouNews'
-	}],
-	'www.laohu.com':[{
-		'p':3,
-		'c':0,
-		'port':'getLaohuNews'
-	}],
-	'www.appgame.com':[{
-		'p':4,
-		'c':0,
-		'port':'getAppgameNews'
-	},{
-		'p':4,
-		'c':1,
-		'port':'getAppgameWeb'
-	}],
-	'news.d.cn':[{
-		'p':5,
-		'c':0,
-		'port':'getDNews'
-	}],
-	'www.iapps.im':[{
-		'p':6,
-		'c':0,
-		'port':'getIappsNews'
-	}],
-	'youxiputao.com':[{
-		'p':7,
-		'c':0,
-		'port':'getYouxiputaoNews'
-	}]
-}
 var _global = {
 	'port_num' : 9,
 	'page': {},
