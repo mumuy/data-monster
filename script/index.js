@@ -93,34 +93,68 @@ $c_tabs.tabs({
 	var data = {};
 	var num = 0;
 	if(localStorage['updateTime']&&+new Date()-localStorage['updateTime']<3.6e6*_global['expires']){	//如果再有效期内则不更新（cookie的方式失效了）
-		for(var i in _config){
-			 for(var j in _config[i]){
-				(function(item){
-					if(localStorage[item['port']]){						//缓存存在
-						data = JSON.parse(localStorage[item['port']]);	//获取缓存中的数据
+		for(var i=0;i<_data.length;i++){
+			 for(var j=0;j<_data[i]['items'].length;j++){
+				(function(p,c){
+					var item = _data[p]['items'][c];
+					var id = p+','+c;
+					if(localStorage[id]){								//缓存存在
+						data = JSON.parse(localStorage[id]);			//获取缓存中的数据
 						data.length = _global['page_num'];				//截取缓存中第一页的数据
-						_global['page'][item['port']] = Math.ceil(_global['page_num']/_global['num'][item['port']]);
-						load_list(item['p'],item['c'],data);
+						_global['page'][id] = Math.ceil(_global['page_num']/_global['num'][id]);
+						load_list(p,c,data);
 						num++;
 						if(num==_global['port_num']){
 							load_list(0,0,getNewsSort());
 						}
 					}else{												//缓存不存在
-						window[item['port']](function(data){			//请求数据借口，获取数据
-							load_list(item['p'],item['c'],data);		
+						getNews(id,function(data){						//请求数据借口，获取数据
+							load_list(p,c,data);		
 							num++;
 							if(num==_global['port_num']){
 								load_list(0,0,getNewsSort());
 							}
 						});
 					}				
-				})(_config[i][j]);
+				})(i,j);
 			}
 		}			
 	}else{																//如果缓存过期，获取全部新数据
 		getNews();
 	}
 })();
+// (function(){
+// 	var data = {};
+// 	var num = 0;
+// 	if(localStorage['updateTime']&&+new Date()-localStorage['updateTime']<3.6e6*_global['expires']){	//如果再有效期内则不更新（cookie的方式失效了）
+// 		for(var i in _config){
+// 			 for(var j in _config[i]){
+// 				(function(item){
+// 					if(localStorage[item['port']]){						//缓存存在
+// 						data = JSON.parse(localStorage[item['port']]);	//获取缓存中的数据
+// 						data.length = _global['page_num'];				//截取缓存中第一页的数据
+// 						_global['page'][item['port']] = Math.ceil(_global['page_num']/_global['num'][item['port']]);
+// 						load_list(item['p'],item['c'],data);
+// 						num++;
+// 						if(num==_global['port_num']){
+// 							load_list(0,0,getNewsSort());
+// 						}
+// 					}else{												//缓存不存在
+// 						window[item['port']](function(data){			//请求数据借口，获取数据
+// 							load_list(item['p'],item['c'],data);		
+// 							num++;
+// 							if(num==_global['port_num']){
+// 								load_list(0,0,getNewsSort());
+// 							}
+// 						});
+// 					}				
+// 				})(_config[i][j]);
+// 			}
+// 		}			
+// 	}else{																//如果缓存过期，获取全部新数据
+// 		getNews();
+// 	}
+// })();
 
 //手动数据加载
 $(".loader input").click(function(){

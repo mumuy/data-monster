@@ -107,18 +107,7 @@ var _config = {
 }
 var _global = {
 	'port_num' : 9,
-	'page': {
-		'all':0,
-		'getChuappNews':0,
-		'getChuappSd':0,
-		'getShouyouNews':0,
-		'getLaohuNews':0,
-		'getAppgameNews':0,
-		'getAppgameWeb':0,
-		'getDNews':0,
-		'getIappsNews':0,
-		'getYouxiputaoNews':0
-	},
+	'page': {},
 	'num': {
 		'all':0,
 		'getChuappNews':10,
