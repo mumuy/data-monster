@@ -107,7 +107,7 @@ function showTime(timestamp){
 	return str;
 }
 
-//获取“触乐”新鲜列表
+//获取列表
 function getNews(id,callback){
 	var posts = [];
 	var ids = id.split(',');
@@ -131,7 +131,9 @@ function getNews(id,callback){
 				var $this = $(this);
 				var post = {};
 				post['title'] = $this.find(item['title']).text();
-				post['time'] = toTimestamp($this.find(item['time']).text());
+				var time = $this.find(item['time']).text();
+				time.replace(/^.+(\d.+)$/,'$1');
+				post['time'] = toTimestamp(time);
 				post['url'] = $this.find(item['url']).attr('href');
 				post['description'] = $this.find(item['description']).text();
 				posts.push(post);
@@ -210,4 +212,11 @@ function filter(data){
 	}
 	console.log("过滤条目：",list2); //将过滤的数据在控制台打出，而有用的进行返回
 	return list1;
+}
+
+_global['port_count'] = 0;
+for(var i=0;i<_data.length;i++){
+	for(var j=0;j<_data[i]['items'].length;j++){
+		_global['port_count']++;
+	}
 }
