@@ -4,10 +4,10 @@
 	var $panels =  $('.container .panels');
 	$nav.append('<li class="all">全部</li>');
 	$panels.append('<li>\
-		<div class="box c-tabs" data-id="">\
+		<div class="box c-tabs" data-p="-1">\
 			<div class="hd">\
 				<div class="loader">\
-					<input data-id="" type="button" value="重新获取"/>\
+					<input data-p="-1" type="button" value="重新获取"/>\
 					<img src="../image/loader.gif"/>\
 				</div>\
 				<h2>全部</h2>\
@@ -21,21 +21,23 @@
 	for(var i=0;i<_data.length;i++){
 		$nav.append('<li>'+_data[i]['name']+'</li>');
 		var names = '';
+		var lists = '';
 		for(var j=0;j<_data[i]['items'].length;j++){
 			names += '<li>'+_data[i]['items'][j]['name']+'</li>';
+			lists += '<li></li>';
 		}
 		$panels.append('<li>\
-			<div class="box c-tabs" data-id="">\
+			<div class="box c-tabs" data-p="'+(i+1)+'">\
 				<div class="hd">\
 					<div class="loader">\
-						<input data-id="" type="button" value="重新获取"/>\
+						<input data-p="'+(i+1)+'" type="button" value="重新获取"/>\
 						<img src="../image/loader.gif"/>\
 					</div>\
-					<h2>全部</h2>\
+					<h2>'+_data[i]['name']+'</h2>\
 					<ul class="c-nav">'+names+'</ul>\
 				</div>\
 				<div class="bd">\
-					<ul class="c-panels">'+names+'</ul>\
+					<ul class="c-panels">'+lists+'</ul>\
 				</div>\
 			</div>\
 		</li>');
@@ -91,27 +93,28 @@ $c_tabs.tabs({
 //默认数据加载
 (function(){
 	var data = {};
-	var num = 0;
+	var num = 0,port_count =0;
 	if(localStorage['updateTime']&&+new Date()-localStorage['updateTime']<3.6e6*_global['expires']){	//如果再有效期内则不更新（cookie的方式失效了）
 		for(var i=0;i<_data.length;i++){
 			 for(var j=0;j<_data[i]['items'].length;j++){
 				(function(p,c){
 					var item = _data[p]['items'][c];
 					var id = p+','+c;
+					port_count++;
 					if(localStorage[id]){								//缓存存在
 						data = JSON.parse(localStorage[id]);			//获取缓存中的数据
-						data.length = _global['page_num'];				//截取缓存中第一页的数据
-						_global['page'][id] = Math.ceil(_global['page_num']/_global['num'][id]);
-						load_list(p,c,data);
+						data.length = _global['page_count'];				//截取缓存中第一页的数据
+						_global['page'][id] = Math.ceil(_global['page_count']/item['count']);
+						load_list(p+1,c,data);
 						num++;
-						if(num==_global['port_num']){
+						if(num==port_count){
 							load_list(0,0,getNewsSort());
 						}
 					}else{												//缓存不存在
 						getNews(id,function(data){						//请求数据借口，获取数据
 							load_list(p,c,data);		
 							num++;
-							if(num==_global['port_num']){
+							if(num==port_count){
 								load_list(0,0,getNewsSort());
 							}
 						});
@@ -120,61 +123,29 @@ $c_tabs.tabs({
 			}
 		}			
 	}else{																//如果缓存过期，获取全部新数据
-		getNews();
+		getAllNews();
 	}
 })();
-// (function(){
-// 	var data = {};
-// 	var num = 0;
-// 	if(localStorage['updateTime']&&+new Date()-localStorage['updateTime']<3.6e6*_global['expires']){	//如果再有效期内则不更新（cookie的方式失效了）
-// 		for(var i in _config){
-// 			 for(var j in _config[i]){
-// 				(function(item){
-// 					if(localStorage[item['port']]){						//缓存存在
-// 						data = JSON.parse(localStorage[item['port']]);	//获取缓存中的数据
-// 						data.length = _global['page_num'];				//截取缓存中第一页的数据
-// 						_global['page'][item['port']] = Math.ceil(_global['page_num']/_global['num'][item['port']]);
-// 						load_list(item['p'],item['c'],data);
-// 						num++;
-// 						if(num==_global['port_num']){
-// 							load_list(0,0,getNewsSort());
-// 						}
-// 					}else{												//缓存不存在
-// 						window[item['port']](function(data){			//请求数据借口，获取数据
-// 							load_list(item['p'],item['c'],data);		
-// 							num++;
-// 							if(num==_global['port_num']){
-// 								load_list(0,0,getNewsSort());
-// 							}
-// 						});
-// 					}				
-// 				})(_config[i][j]);
-// 			}
-// 		}			
-// 	}else{																//如果缓存过期，获取全部新数据
-// 		getNews();
-// 	}
-// })();
 
 //手动数据加载
 $(".loader input").click(function(){
 	var $this = $(this);
-	var resource = $this.data('resource');
+	var p = +$this.data('p');
 	var $img = $this.next().show();
-	if(resource=="all"){	//如果加载的数据源是全部，则更新所有数据
-		getNews(function(){
+	if(p<0){															//如果加载的数据源是全部，则更新所有数据
+		getAllNews(function(){
 			$img.hide();
 		});
 	}else{
-		var items = _config[resource];
+		var items = _data[p]['items'];
 		var num = 0;
-		var $cpanel = $panels.eq(items[0]['p']).find(".c-panels>li").html("<span class='loading'>数据加载中...</span>");
+		var $cpanel = $panels.eq(p).find(".c-panels>li").html("<span class='loading'>数据加载中...</span>");
 		for(var i = 0;i <items.length;i++){
-			(function(item,i){
+			(function(c){
 				_global['page'][item['port']]=0;				//只加载第一页
-				window[item['port']](function(data){
-					$cpanel.eq(i).empty();
-					load_list(item['p'],item['c'],data);		//改变当前页数据
+				getNews(p+','+c,function(data){
+					$cpanel.eq(c).empty();
+					load_list(p+1,c,data);						//改变当前页数据
 					num++
 					if(num==items.length){
 						_global['page']['all'] = 0;
@@ -182,7 +153,7 @@ $(".loader input").click(function(){
 						$img.hide();
 					}				
 				});		
-			})(items[i],i);
+			})(i);
 		}	
 	}
 });
@@ -191,16 +162,17 @@ $(".loader input").click(function(){
 $(".box").on("click",".more a",function(){
 	var $this = $(this);
 	var $cpanel = $this.parents('.c-panels li');
-	var index = $cpanel.index();
-	var resource = $cpanel.parents('.box').data('resource');
+	var c = $cpanel.index();
+	var p = +$cpanel.parents('.box').data('p');
 	$this.replaceWith("<span>加载中...</span>");
-	if(resource=="all"){							//如果加载的数据源是全部，则更新所有数据
+	if(p<0){										//如果加载的数据源是全部，则更新所有数据
 		load_list(0,0,getNewsSort());
 	}else{
-		var items = _config[resource];
-		item = items[index];
-		window[item['port']](function(data){
-			load_list(item['p'],item['c'],data);	//改变当前页数据
+		var items = _data[p]['items'];
+		item = items[c];
+		var id = p+','+c;
+		getNews(id,function(data){
+			load_list(p,c,data);					//改变当前页数据
 			_global['page']['all'] = 0;
 			load_list(0,0,getNewsSort());			//改变汇总页数据		
 		});
@@ -211,15 +183,15 @@ $(".box").on("click",".more a",function(){
 //加载节点
 function load_list(p,c,data){
 	var len = data.length;
-	var sum = Math.floor(len/_global['page_num'])*_global['page_num'];	//只输入page_num的倍数
+	var sum = Math.floor(len/_global['page_count'])*_global['page_count'];	//只输入page_count的倍数
 	var $panel = $panels.eq(p);
 	var $c_panel = $panel.find(".c-panels li:eq("+c+")");
-	if(len==_global['page_num']){	//数据只有page_num说明为非追加数据
+	if(len==_global['page_count']){	//数据只有page_count说明为非追加数据
 		$c_panel.empty();
 	}else{
 		$c_panel.find('.more').remove();
 	}
-	for(var i=sum-_global['page_num']; i<sum; i++){
+	for(var i=sum-_global['page_count']; i<sum; i++){
 		var item = data[i];
 		$c_panel.append("<p><span class='time'>"+showTime(item['time'])+"</span><a href='"+item['url']+"' target='_blank'>"+item['title']+"</a></p>");
 	}
@@ -227,25 +199,27 @@ function load_list(p,c,data){
 }
 
 //获取所有游戏
-function getNews(callback){
+function getAllNews(callback){
 	callback = callback || function(){};
 	var data = [];
-	var num = 0;
+	var num = 0,port_count = 0;
 	localStorage['updateTime'] = +new Date(); //最后更新时间
-	for(var i in _config){
-		for(var j in _config[i]){
-			(function(item){
-				_global['page'][item['port']]=0;		//只加载第一页
-				window[item['port']](function(data){
-					load_list(item['p'],item['c'],data);
+	for(var i=0;i<_data.length;i++){
+		for(var j=0;j<_data[i]['items'].length;j++){
+			(function(p,c){
+				var id = p+','+c;
+				_global['page'][id]=0;		 //只加载第一页
+				port_count++;
+				getNews(id,function(data){
+					load_list(p+1,c,data);
 					num++;
-					if(num==_global['port_num']){
+					if(num==port_count){
 						_global['page']['all']=0;
 						load_list(0,0,getNewsSort());
 						callback();
 					}
 				});	
-			})(_config[i][j]);
+			})(i,j);
 		}
 	}
 	return data;

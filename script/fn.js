@@ -1,12 +1,3 @@
-(function(){
-	var filter = {
-		'script':/<script(.|\n)*?<\/script>/ig,
-		'link':/<link.*?\/>/ig,
-		'img':/<img.*?>/ig
-	};	
-})();
-
-
 //判断是否为数组中的值
 function in_array(val,arr){
 	for(i=0;i<arr.length&&arr[i]!=val;i++);
@@ -119,38 +110,41 @@ function showTime(timestamp){
 //获取“触乐”新鲜列表
 function getNews(id,callback){
 	var posts = [];
-	var port = 'getChuappNews';
-	var num = _global['num'][port];
-	var star = Math.floor(_global['page'][port]*num/_global['page_num']);
-	var sum = (star+1)*_global['page_num'];
+	var ids = id.split(',');
+	var item = _data[ids[0]]['items'][ids[1]];
+	var count = item['count'];
+	_global['page'][id] = _global['page'][id]||0;
+	var star = Math.floor(_global['page'][id]*count/_global['page_count']);
+	var sum = (star+1)*_global['page_count'];
 	var str ="";
-	if(localStorage[port]){							//如果存在数据则读取
-		posts = JSON.parse(localStorage[port]);		//读入数据库中的数据
-		posts.length = _global['page'][port]*num;	//通过对页面总数的控制控制数据长度
+	if(localStorage[id]){							//如果存在数据则读取
+		posts = JSON.parse(localStorage[id]);		//读入数据库中的数据
+		posts.length = _global['page'][id]*count;		//通过对页面总数的控制控制数据长度
 	}
 	do{
-		_global['page'][port]++;
-		$.get("http://www.chuapp.com/category/news/page/"+_global['page'][port],function(data){
+		_global['page'][id]++;
+		var port = item['port'].replace(/\[page\]/,_global['page'][id]);
+		$.get(port,function(data){
 			data = data.replace(/<script(.|\n)*?<\/script>/ig, '').replace(/<link.*?\/>/ig, '').replace(/<img.*?>/ig, '');//删除标签防止多余请求
-			var $posts = $(data).find('.content-main-cont .post');
+			var $posts = $(data).find(item['item']);
 			$posts.each(function(){
 				var $this = $(this);
 				var post = {};
-				post['title'] = $this.find('.li-title').text();
-				post['time'] = toTimestamp($.trim($this.find('.li-label span').text().split('·')[1]));
-				post['url'] = $this.find('a').attr('href');
-				post['description'] = $this.find('.li-description').text();
+				post['title'] = $this.find(item['title']).text();
+				post['time'] = toTimestamp($this.find(item['time']).text());
+				post['url'] = $this.find(item['url']).attr('href');
+				post['description'] = $this.find(item['description']).text();
 				posts.push(post);
 			});
 			if(posts.length>=sum){
 				posts.sort(function(a,b){
 					return b['time'] - a['time'];
 				});
-				localStorage[port] = JSON.stringify(posts);
-				callback(posts);				
+				localStorage[id] = JSON.stringify(posts);
+				callback(posts);
 			}
 		});		
-	}while(num*_global['page'][port]<sum);
+	}while(count*_global['page'][id]<sum);
 }
 
 //获取所有游戏资讯排序
@@ -161,10 +155,11 @@ function getNewsSort(){
 	}else{
 		_global['page']['all']=1;
 	}
-	for(var i in _config){
-		for(var j in _config[i]){
-			var item = _config[i][j];
-			var arr = JSON.parse(localStorage[item['port']]);
+	for(var i=0;i<_data.length;i++){
+		for(var j=0;j<_data[i]['items'].length;j++){
+			var id = i+','+j;
+			var item = _data[i]['items'][j];
+			var arr = JSON.parse(localStorage[id]);
 			data = data.concat(arr);	
 		}
 	}
@@ -172,7 +167,7 @@ function getNewsSort(){
 	data.sort(function(a,b){
 		return b['time'] - a['time'];
 	});
-	data.length = Math.min(data.length,_global['page']['all']*_global['page_num']);
+	data.length = Math.min(data.length,_global['page']['all']*_global['page_count']);
 	return data;
 }
 

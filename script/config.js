@@ -1,10 +1,11 @@
 //配置文件
+//数据参数
 _data = [
 	{
 		'name':'触乐',
 		'items':[{
 			'name':'新鲜事',
-			'url':'http://www.chuapp.com/category/news/page/[page]',
+			'port':'http://www.chuapp.com/category/news/page/[page]',
 			'item':'.content-main-cont .post',
 			'title':'.li-title',
 			'url':'a',
@@ -13,7 +14,7 @@ _data = [
 			'count':10
 		},{
 			'name':'触视点',
-			'url':'http://www.chuapp.com/category/sd/page/[page]',
+			'port':'http://www.chuapp.com/category/sd/page/[page]',
 			'item':'.content-main-cont .post',
 			'title':'.li-title',
 			'url':'a',
@@ -25,7 +26,7 @@ _data = [
 		'name':'手游网',
 		'items':[{
 			'name':'资讯',
-			'url':'http://news.shouyou.com/news/fnews_[page].shtml',
+			'port':'http://news.shouyou.com/news/fnews_[page].shtml',
 			'item':'.art-list li',
 			'title':'.tit a',
 			'url':'.tit a',
@@ -34,22 +35,10 @@ _data = [
 			'count':15
 		}]
 	},{
-		'name':'老虎游戏',
-		'items':[{
-			'name':'新鲜事',
-			'url':'http://www.laohu.com/xinwen/index_[page].html',
-			'item':'.agpostlist .post-item',
-			'title':'h6 a',
-			'url':'h6 a',
-			'time':'.date',
-			'description':'.p-des',
-			'count':12
-		}]
-	},{
 		'name':'爱应用',
 		'items':[{
 			'name':'新闻',
-			'url':'http://www.iapps.im/lists/17/page/[page]',
+			'port':'http://www.iapps.im/lists/17/page/[page]',
 			'item':'#content article',
 			'title':'.entry-title a',
 			'url':'.entry-title a',
@@ -59,22 +48,9 @@ _data = [
 		}]
 	}
 ];
-
+//控制参数
 var _global = {
-	'port_num' : 9,
-	'page': {},
-	'num': {
-		'all':0,
-		'getChuappNews':10,
-		'getChuappSd':10,
-		'getShouyouNews':15,
-		'getLaohuNews':12,
-		'getAppgameNews':18,
-		'getAppgameWeb':18,
-		'getDNews':12,
-		'getIappsNews':10,
-		'getYouxiputaoNews':10
-	},
-	'page_num':20,
-	'expires':2
+	'page': {},				//页码记录(动态)
+	'page_count':20,		//每页显示多少条记录
+	'expires':2 			//本地缓存的生存周期
 }
