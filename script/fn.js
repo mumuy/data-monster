@@ -132,7 +132,7 @@ function getNews(id,callback){
 				var post = {};
 				post['title'] = $this.find(item['title']).text();
 				var time = $this.find(item['time']).text();
-				time.replace(/^.+(\d.+)$/,'$1');
+				time = $.trim(time.replace(/^.*?(\d.+)$/,'$1'));
 				post['time'] = toTimestamp(time);
 				post['url'] = $this.find(item['url']).attr('href');
 				post['description'] = $this.find(item['description']).text();
